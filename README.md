@@ -52,7 +52,7 @@ These files are not required to run the web app, but they document how the syste
 ## Team Contributions
 
 - **BEGDOURI TERRAF Marwa** — dataset curation, synthetic data generation, dashboard and PDF knowledge upload, and dataset search for URLs.
-- **AMAR BAKAR Lareibiya** — retrieval module development, multilingual dataset preprocessing, social media and SMS data search support.
+- **AMAR BAKAR Lareibiya** — retrieval module development, multilingual dataset preprocessing, social media and SMS data search support and Create the embeddings, faiss_index, and bm25_index files.
 - **ELMIRI Imad** — LLM design, prompt engineering, benchmarking, and Gmail sample analysis.
 - **HIAFDOUNE Oussama** — SMS analysis support, URL scoring logic, integration testing, and SMS dataset search.
 - **RAFIQ Ilias** — RAG pipeline orchestration, normal SMS flow, retrieval integration, and final system wiring.
