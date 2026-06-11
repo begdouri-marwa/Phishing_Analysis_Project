@@ -1,0 +1,8 @@
+flask==3.0.0
+pandas==2.1.0
+numpy>=1.26.0
+sentence-transformers
+rank_bm25
+PyMuPDF
+openai
+faiss-cpu

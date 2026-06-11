@@ -1,0 +1,10 @@
+Model,Language,Samples,Accuracy,F1_Macro
+llama70b,ar,30,0.7667,0.76
+llama70b,en,55,0.8182,0.7935
+llama70b,fr,15,0.6,0.5982
+llama8b,ar,30,0.5667,0.5543
+llama8b,en,55,0.8364,0.8114
+llama8b,fr,15,0.5333,0.5333
+qwen32b,ar,30,0.4,0.325
+qwen32b,en,55,0.7091,0.5736
+qwen32b,fr,15,0.3333,0.3056
