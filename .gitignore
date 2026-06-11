@@ -1,0 +1,20 @@
+﻿# Python environment
+venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local env files
+.env
+
+# Editor files
+.DS_Store
+Thumbs.db
+
+# Generated data and artifacts
+uploads/
+data/indexes/
+data/pdf/

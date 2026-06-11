@@ -11,7 +11,10 @@ from src.pdf_knowledge import retrieve_pdf
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 client = OpenAI(
     api_key=GROQ_API_KEY,
