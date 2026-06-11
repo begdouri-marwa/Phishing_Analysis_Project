@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard — Phishing Detection System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+</button>
+
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+</button>
+
+<!-- SVG Icons Library (Hidden) -->
+<svg style="display: none;">
+    <!-- Shield (Logo) -->
+    <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </symbol>
+
+    <!-- Search (Analyze) -->
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </symbol>
+
+    <!-- Bar Chart (Dashboard) -->
+    <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <line x1="18" y1="20" x2="18" y2="10"/>
+        <line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+    </symbol>
+
+    <!-- Book (Knowledge) -->
+    <symbol id="icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+    </symbol>
+
+    <!-- Clock (History) -->
+    <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+    </symbol>
+
+    <!-- Edit (Input) -->
+    <symbol id="icon-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+    </symbol>
+
+    <!-- Trash (Clear) -->
+    <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+    </symbol>
+
+    <!-- Alert Triangle (Warning) -->
+    <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </symbol>
+
+    <!-- Check Circle (Success) -->
+    <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+    </symbol>
+
+    <!-- Zap (Risk) -->
+    <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </symbol>
+
+    <!-- Globe (Language) -->
+    <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    </symbol>
+
+    <!-- Target (Confidence) -->
+    <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="6"/>
+        <circle cx="12" cy="12" r="2"/>
+    </symbol>
+
+    <!-- List (Explanation) -->
+    <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+    </symbol>
+
+    <!-- Lightbulb (Recommendations) -->
+    <symbol id="icon-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <line x1="9" y1="18" x2="15" y2="18"/>
+        <line x1="10" y1="22" x2="14" y2="22"/>
+        <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+    </symbol>
+
+    <!-- Link (Similar) -->
+    <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </symbol>
+
+    <!-- Box (Dataset) -->
+    <symbol id="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+        <line x1="12" y1="22.08" x2="12" y2="12"/>
+    </symbol>
+
+    <!-- Fish (Phishing) -->
+    <symbol id="icon-fish" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6-3.56 0-7.56-2.53-8.5-6z"/>
+        <path d="M18 12v.01"/>
+        <path d="M2 12c2-2 4-3 6.5-3"/>
+        <path d="M2 12c2 2 4 3 6.5 3"/>
+    </symbol>
+
+    <!-- Languages -->
+    <symbol id="icon-languages" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="m5 8 6 6"/>
+        <path d="m4 14 6-6 2-3"/>
+        <path d="M2 5h12"/>
+        <path d="M7 2h1"/>
+        <path d="m22 22-5-10-5 10"/>
+        <path d="M14 18h6"/>
+    </symbol>
+
+    <!-- Upload -->
+    <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+    </symbol>
+
+    <!-- File -->
+    <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+    </symbol>
+
+    <!-- Database -->
+    <symbol id="icon-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+    </symbol>
+
+    <!-- Loader -->
+    <symbol id="icon-loader" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <line x1="12" y1="2" x2="12" y2="6"/>
+        <line x1="12" y1="18" x2="12" y2="22"/>
+        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
+        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
+        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
+    </symbol>
+
+    <!-- Flag (GB) -->
+    <symbol id="icon-flag-gb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+        <line x1="4" y1="22" x2="4" y2="15"/>
+    </symbol>
+
+    <!-- Flag (FR) -->
+    <symbol id="icon-flag-fr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+        <line x1="4" y1="22" x2="4" y2="15"/>
+    </symbol>
+
+    <!-- Flag (AR) -->
+    <symbol id="icon-flag-ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+        <line x1="4" y1="22" x2="4" y2="15"/>
+    </symbol>
+
+    <!-- Link External (URL) -->
+    <symbol id="icon-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+    </symbol>
+
+    <!-- Pie Chart -->
+    <symbol id="icon-pie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+        <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+    </symbol>
+
+    <!-- Radio/Channel -->
+    <symbol id="icon-radio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="12" cy="12" r="2"/>
+        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
+    </symbol>
+
+    <!-- Swords (Attack) -->
+    <symbol id="icon-swords" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/>
+        <line x1="13" y1="19" x2="19" y2="13"/>
+        <line x1="16" y1="16" x2="20" y2="20"/>
+        <line x1="19" y1="21" x2="21" y2="19"/>
+    </symbol>
+</svg>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">
+            <svg><use href="#icon-shield"/></svg>
+        </div>
+        <div class="sidebar-logo-text">
+            <div class="logo-title">PhishGuard</div>
+            <div class="logo-sub">NLP Detection System</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="#analyze" class="nav-item active" onclick="showSection('analyze', this)">
+            <span class="nav-icon"><svg><use href="#icon-search"/></svg></span>
+            <span>Analyze Message</span>
+        </a>
+        <a href="#dashboard" class="nav-item" onclick="showSection('dashboard', this)">
+            <span class="nav-icon"><svg><use href="#icon-chart"/></svg></span>
+            <span>Dashboard</span>
+        </a>
+        <a href="#knowledge" class="nav-item" onclick="showSection('knowledge', this)">
+            <span class="nav-icon"><svg><use href="#icon-book"/></svg></span>
+            <span>Knowledge Base</span>
+        </a>
+        <a href="#history" class="nav-item" onclick="showSection('history', this)">
+            <span class="nav-icon"><svg><use href="#icon-clock"/></svg></span>
+            <span>History</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-stats">
+        <div class="stat-mini">
+            <span class="stat-mini-num">{{ stats.total }}</span>
+            <span class="stat-mini-label">Dataset entries</span>
+        </div>
+        <div class="stat-mini">
+            <span class="stat-mini-num">{{ stats.phishing }}</span>
+            <span class="stat-mini-label">Phishing samples</span>
+        </div>
+        <div class="stat-mini">
+            <span class="stat-mini-num">3</span>
+            <span class="stat-mini-label">Languages</span>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        FST Tanger · Master IASD<br>NLP 2026
+    </div>
+</aside>
+
+<!-- ── MAIN CONTENT ──────────────────────────────────────────────────────────── -->
+<main class="main" id="main">
+    <!-- ── ANALYZE SECTION ──────────────────────────────────────────────────── -->
+    <section id="section-analyze" class="section active">
+        <div class="section-header">
+            <h1>Analyze a Message</h1>
+            <p>Paste any suspicious email, SMS, URL or social media message below</p>
+        </div>
+
+        <div class="analyze-grid">
+            <!-- Input Card -->
+            <div class="card input-card">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-edit"/></svg></span>
+                    <span>Message Input</span>
+                </div>
+
+                <div class="lang-badges">
+                    <span class="badge badge-blue">EN</span>
+                    <span class="badge badge-green">FR</span>
+                    <span class="badge badge-orange">AR</span>
+                    <span class="badge-sep">Multilingual supported</span>
+                </div>
+
+                <textarea id="messageInput" class="message-input"
+                    placeholder="Paste your suspicious message here...&#10;&#10;Examples:&#10;• URGENT: Your PayPal account has been suspended...&#10;• Votre compte a été bloqué, cliquez ici...&#10;• https://paypal-secure-verify.xyz/login&#10;• تنبيه: تم تعليق حسابك..."></textarea>
+
+                <div class="input-actions">
+                    <button class="btn btn-primary" onclick="analyzeMessage()">
+                        <svg><use href="#icon-search"/></svg>
+                        <span>Analyze Now</span>
+                    </button>
+                    <button class="btn btn-ghost" onclick="clearAll()">
+                        <svg><use href="#icon-trash"/></svg>
+                        <span>Clear</span>
+                    </button>
+                </div>
+
+                <!-- Quick test examples -->
+                <div class="examples-section">
+                    <div class="examples-title">Quick test examples:</div>
+                    <div class="examples-grid">
+                        <button class="example-btn" onclick="loadExample('phishing_en')">
+                            <span style="font-size: 14px;">🇬🇧</span>
+                            <span>Phishing EN</span>
+                        </button>
+                        <button class="example-btn" onclick="loadExample('phishing_fr')">
+                            <span style="font-size: 14px;">🇫🇷</span>
+                            <span>Phishing FR</span>
+                        </button>
+                        <button class="example-btn" onclick="loadExample('phishing_ar')">
+                            <span style="font-size: 14px;">🇲🇦</span>
+                            <span>Phishing AR</span>
+                        </button>
+                        <button class="example-btn" onclick="loadExample('legit_en')">
+                            <svg><use href="#icon-check"/></svg>
+                            <span>Legitimate</span>
+                        </button>
+                        <button class="example-btn" onclick="loadExample('url')">
+                            <svg><use href="#icon-external"/></svg>
+                            <span>Phishing URL</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Card -->
+            <div class="card result-card" id="resultCard">
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">
+                        <svg><use href="#icon-shield"/></svg>
+                    </div>
+                    <div class="empty-title">Ready to analyze</div>
+                    <div class="empty-sub">Enter a message and click Analyze Now</div>
+                </div>
+
+                <!-- Loading state -->
+                <div class="loading-state hidden" id="loadingState">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Analyzing message...</div>
+                    <div class="loading-steps">
+                        <div class="loading-step active" id="step1">
+                            <svg><use href="#icon-loader"/></svg>
+                            <span>Preprocessing text</span>
+                        </div>
+                        <div class="loading-step" id="step2">
+                            <svg><use href="#icon-search"/></svg>
+                            <span>Searching similar cases</span>
+                        </div>
+                        <div class="loading-step" id="step3">
+                            <svg><use href="#icon-lightbulb"/></svg>
+                            <span>Generating analysis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result state -->
+                <div class="result-state hidden" id="resultState">
+
+                    <div class="result-header" id="resultHeader">
+                        <div class="result-verdict" id="resultVerdict"></div>
+                        <div class="result-meta">
+                            <span class="result-risk" id="resultRisk"></span>
+                            <span class="result-lang" id="resultLang"></span>
+                            <span class="result-confidence" id="resultConfidence"></span>
+                        </div>
+                    </div>
+
+                    <div class="result-body">
+                        <!-- Explanation -->
+                        <div class="result-section">
+                            <div class="result-section-title">
+                                <svg><use href="#icon-list"/></svg>
+                                Explanation
+                            </div>
+                            <div class="result-text" id="resultExplanation"></div>
+                        </div>
+
+                        <!-- Suspicious elements -->
+                        <div class="result-section" id="suspiciousSection">
+                            <div class="result-section-title">
+                                <svg><use href="#icon-alert"/></svg>
+                                Suspicious Elements
+                            </div>
+                            <div class="suspicious-list" id="suspiciousList"></div>
+                        </div>
+
+                        <!-- Recommendations -->
+                        <div class="result-section">
+                            <div class="result-section-title">
+                                <svg><use href="#icon-lightbulb"/></svg>
+                                Recommendations
+                            </div>
+                            <div class="result-text" id="resultRecommendations"></div>
+                        </div>
+
+                        <!-- Similar cases -->
+                        <div class="result-section" id="similarSection">
+                            <div class="result-section-title">
+                                <svg><use href="#icon-link"/></svg>
+                                Similar Cases in Dataset
+                            </div>
+                            <div class="similar-list" id="similarList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── DASHBOARD SECTION ─────────────────────────────────────────────────── -->
+    <section id="section-dashboard" class="section hidden">
+        <div class="section-header">
+            <h1>Dataset Dashboard</h1>
+            <p>Overview of our phishing detection dataset</p>
+        </div>
+
+        <!-- Top stats -->
+        <div class="stats-row">
+            <div class="stat-card stat-total">
+                <div class="stat-icon">
+                    <svg><use href="#icon-box"/></svg>
+                </div>
+                <div class="stat-num">{{ stats.total }}</div>
+                <div class="stat-label">Total Entries</div>
+            </div>
+            <div class="stat-card stat-phishing">
+                <div class="stat-icon">
+                    <svg><use href="#icon-fish"/></svg>
+                </div>
+                <div class="stat-num">{{ stats.phishing }}</div>
+                <div class="stat-label">Phishing</div>
+            </div>
+            <div class="stat-card stat-legit">
+                <div class="stat-icon">
+                    <svg><use href="#icon-check"/></svg>
+                </div>
+                <div class="stat-num">{{ stats.legitimate }}</div>
+                <div class="stat-label">Legitimate</div>
+            </div>
+            <div class="stat-card stat-langs">
+                <div class="stat-icon">
+                    <svg><use href="#icon-languages"/></svg>
+                </div>
+                <div class="stat-num">3</div>
+                <div class="stat-label">Languages</div>
+            </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-grid">
+            <!-- Label distribution -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-pie"/></svg></span>
+                    <span>Label Distribution</span>
+                </div>
+                <div class="donut-container">
+                    <svg class="donut" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="var(--bg3)" stroke-width="20"/>
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="var(--danger)" stroke-width="20"
+                            stroke-dasharray="44.7 175.3" stroke-dashoffset="87.5"
+                            class="donut-seg"/>
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="var(--success)" stroke-width="20"
+                            stroke-dasharray="55.3 164.7" stroke-dashoffset="42.8"
+                            class="donut-seg"/>
+                    </svg>
+                    <div class="donut-center">
+                        <div class="donut-num">{{ stats.total }}</div>
+                        <div class="donut-sub">total</div>
+                    </div>
+                </div>
+                <div class="donut-legend">
+                    <div class="legend-item"><span class="dot dot-red"></span> Phishing ({{ stats.phishing }})</div>
+                    <div class="legend-item"><span class="dot dot-green"></span> Legitimate ({{ stats.legitimate }})</div>
+                </div>
+            </div>
+
+            <!-- Channel distribution -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-radio"/></svg></span>
+                    <span>By Channel</span>
+                </div>
+                <div class="bar-chart">
+                    {% for channel, count in stats.channels.items() %}
+                    <div class="bar-row">
+                        <div class="bar-label">{{ channel }}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: {{ (count / stats.total * 100)|round|int }}%"
+                                data-value="{{ count }}"></div>
+                        </div>
+                        <div class="bar-value">{{ count }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Language distribution -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-globe"/></svg></span>
+                    <span>By Language</span>
+                </div>
+                <div class="bar-chart">
+                    {% for lang, count in stats.languages.items() %}
+                    <div class="bar-row">
+                        <div class="bar-label">{{ lang }}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-fill-lang" style="width: {{ (count / stats.total * 100)|round|int }}%"
+                                data-value="{{ count }}"></div>
+                        </div>
+                        <div class="bar-value">{{ count }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Attack type distribution -->
+            <div class="card chart-card chart-wide">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-swords"/></svg></span>
+                    <span>Attack Types Distribution</span>
+                </div>
+                <div class="bar-chart">
+                    {% for attack, count in stats.attack_types.items() %}
+                    {% if count > 0 and attack != 'none' %}
+                    <div class="bar-row">
+                        <div class="bar-label">{{ attack.replace('_', ' ') }}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill bar-fill-attack" style="width: {{ (count / stats.phishing * 100)|round|int }}%"
+                                data-value="{{ count }}"></div>
+                        </div>
+                        <div class="bar-value">{{ count }}</div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── KNOWLEDGE BASE SECTION ────────────────────────────────────────────── -->
+    <section id="section-knowledge" class="section hidden">
+        <div class="section-header">
+            <h1>Knowledge Base</h1>
+            <p>Upload a PDF to extend the system's knowledge base</p>
+        </div>
+
+        <div class="knowledge-grid">
+            <!-- Upload card -->
+            <div class="card upload-card">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-upload"/></svg></span>
+                    <span>Upload New PDF</span>
+                </div>
+                <div class="upload-zone" id="uploadZone"
+                    ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+                    <div class="upload-icon">
+                        <svg><use href="#icon-file"/></svg>
+                    </div>
+                    <div class="upload-title">Drag and drop your PDF here</div>
+                    <div class="upload-sub">or click to browse</div>
+                    <input type="file" id="pdfInput" accept=".pdf" hidden onchange="uploadPDF(this)">
+                    <button class="btn btn-primary" onclick="document.getElementById('pdfInput').click()">
+                        <svg><use href="#icon-upload"/></svg>
+                        <span>Browse PDF</span>
+                    </button>
+                </div>
+                <div class="upload-result hidden" id="uploadResult"></div>
+            </div>
+
+            <!-- Current knowledge base -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="icon"><svg><use href="#icon-book"/></svg></span>
+                    <span>Current Knowledge Base</span>
+                </div>
+                <div class="kb-list">
+                    <div class="kb-item kb-item-active">
+                        <div class="kb-icon">
+                            <svg><use href="#icon-database"/></svg>
+                        </div>
+                        <div class="kb-info">
+                            <div class="kb-name">master_dataset_preprocessed.csv</div>
+                            <div class="kb-meta">3,038 entries · EN / FR / AR · Active</div>
+                        </div>
+                        <span class="badge badge-green">Active</span>
+                    </div>
+                    <div class="kb-empty" id="noExtraPdfs">
+                        No additional PDFs uploaded yet.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── HISTORY SECTION ───────────────────────────────────────────────────── -->
+    <section id="section-history" class="section hidden">
+        <div class="section-header">
+            <h1>Analysis History</h1>
+            <p>Your recent analyses this session</p>
+        </div>
+
+        <div class="card">
+            <div class="history-header">
+                <button id="clearHistoryBtn" class="danger-btn">
+                    🗑️ Clear History
+                </button>
+            </div>
+            <div class="history-empty" id="historyEmpty">
+                <div class="empty-icon">
+                    <svg><use href="#icon-clock"/></svg>
+                </div>
+                <div>No analyses yet. Go to Analyze Message to get started.</div>
+            </div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+    </section>
+</main>
+
+<script src="/static/js/main.js"></script>
+<script>
+// ── THEME TOGGLE ────────────────────────────────────────────────────────────
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
+// ── SIDEBAR TOGGLE ──────────────────────────────────────────────────────────
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main');
+    const toggleBtn = document.querySelector('.sidebar-toggle');
+    
+    sidebar.classList.toggle('collapsed');
+    main.classList.toggle('sidebar-collapsed');
+    toggleBtn.classList.toggle('active');
+    
+    // Save state to localStorage
+    const isCollapsed = sidebar.classList.contains('collapsed');
+    localStorage.setItem('sidebarCollapsed', isCollapsed);
+}
+
+// Load saved sidebar state
+(function() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (sidebarCollapsed) {
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
+        
+        sidebar.classList.add('collapsed');
+        main.classList.add('sidebar-collapsed');
+        toggleBtn.classList.add('active');
+    }
+})();
+
+// Update showResult to use SVG icons instead of emoji
+const originalShowResult = typeof showResult !== 'undefined' ? showResult : null;
+</script>
+</body>
+</html>
