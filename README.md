@@ -54,7 +54,7 @@ These files are not required to run the web app, but they document how the syste
 - **BEGDOURI TERRAF Marwa** — dataset curation, synthetic data generation, dashboard and PDF knowledge upload, and dataset search for URLs.
 - **AMAR BAKAR Lareibiya** — retrieval module development, multilingual dataset preprocessing, social media and SMS data search support and Create the embeddings, faiss_index, and bm25_index files.
 - **ELMIRI Imad** — LLM design, prompt engineering, benchmarking, and Gmail sample analysis.
-- **HIAFDOUNE Oussama** — SMS analysis support, URL scoring logic, integration testing, and SMS dataset search.
+- **HAFDOUNE Oussama** — SMS analysis support, URL scoring logic, integration testing, and SMS dataset search.
 - **RAFIQ Ilias** — RAG pipeline orchestration, normal SMS flow, retrieval integration, and final system wiring.
 
 ## Dataset Search Breakdown
@@ -148,7 +148,9 @@ This project is ready for improvement. Suggested next steps:
 - improve dataset preprocessing and index rebuilding scripts
 - enhance frontend feedback and analysis detail
 - add better logging, error handling, and automated tests
+## lien de la video
 
+https://drive.google.com/drive/folders/1j9NyRbp5bCI7yxiauPTc51YTrcGF-I4c?usp=drive_link
 ---
 
 Built to combine phishing detection, dataset retrieval, and explainable NLP analysis across multiple languages.
