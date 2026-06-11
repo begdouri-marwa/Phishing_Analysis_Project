@@ -49,6 +49,24 @@ These files are not required to run the web app, but they document how the syste
 - PDF upload workflow for extending knowledge coverage
 - Dashboard and history overview in the web UI
 
+## Team Contributions
+
+- **BEGDOURI TERRAF Marwa** — dataset curation, synthetic data generation, dashboard and PDF knowledge upload, and dataset search for URLs.
+- **AMAR BAKAR Lareibiya** — retrieval module development, multilingual dataset preprocessing, social media and SMS data search support.
+- **ELMIRI Imad** — LLM design, prompt engineering, benchmarking, and Gmail sample analysis.
+- **HIAFDOUNE Oussama** — SMS analysis support, URL scoring logic, integration testing, and SMS dataset search.
+- **RAFIQ Ilias** — RAG pipeline orchestration, normal SMS flow, retrieval integration, and final system wiring.
+
+## Dataset Search Breakdown
+
+| Member | Data Sources / Search Scope |
+| --- | --- |
+| BEGDOURI TERRAF Marwa | URLs |
+| AMAR BAKAR Lareibiya | Social media and SMS dataset search |
+| ELMIRI Imad | Gmail samples, LLM benchmark data |
+| HIAFDOUNE Oussama | SMS dataset search and SMS suspicion patterns |
+| RAFIQ Ilias | SMS dataset search and gmails |
+
 ## Installation
 
 1. Create a Python virtual environment:
