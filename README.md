@@ -3,7 +3,10 @@
 PhishGuard is a Flask-based NLP application designed to detect phishing and suspicious social engineering content in English, French, and Arabic. The project combines dataset retrieval, URL feature analysis, and optional PDF knowledge ingestion into a retrieval-augmented generation (RAG) workflow.
 
 **Database spreadsheet:** https://docs.google.com/spreadsheets/d/1BjB1DXOQ5qawsTU2jFloD6pzr1v31xBa/edit?usp=drive_link&ouid=112024764227967577583&rtpof=true&sd=true
+## lien de la video
 
+https://drive.google.com/drive/folders/1j9NyRbp5bCI7yxiauPTc51YTrcGF-I4c?usp=drive_link
+---
 ## What this project does
 
 - Detects phishing and legitimate messages across email, SMS, URL, and social media channels
@@ -148,9 +151,6 @@ This project is ready for improvement. Suggested next steps:
 - improve dataset preprocessing and index rebuilding scripts
 - enhance frontend feedback and analysis detail
 - add better logging, error handling, and automated tests
-## lien de la video
 
-https://drive.google.com/drive/folders/1j9NyRbp5bCI7yxiauPTc51YTrcGF-I4c?usp=drive_link
----
 
 Built to combine phishing detection, dataset retrieval, and explainable NLP analysis across multiple languages.
