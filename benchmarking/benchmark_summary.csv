@@ -1,0 +1,4 @@
+Model,Accuracy,Precision,Recall,F1_Phishing,F1_Legitimate,F1_Macro,Avg_Time,Valid,Errors
+llama70b,0.77,0.7143,0.9,0.7965,0.7356,0.766,2.15,100,0
+llama8b,0.71,0.64,0.96,0.768,0.6133,0.6907,2.55,100,0
+qwen32b,0.56,0.5319,1.0,0.6944,0.2143,0.4544,2.47,100,0
