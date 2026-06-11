@@ -1,0 +1,4 @@
+model,embedding_dim,encoding_time_s,load_time_s,avg_search_time_ms,index_size_mb,precision@5,recall@5,hit_rate@5,mrr,ndcg@5
+paraphrase-multilingual-MiniLM-L12-v2,384,34.37,7.55,27.512,4.45,0.862,0.0029,0.98,0.9217,0.8669
+distiluse-base-multilingual-cased-v2,512,68.73,7.04,40.202,5.93,0.898,0.003,0.99,0.9608,0.9077
+all-MiniLM-L6-v2,384,26.51,6.54,15.828,4.45,0.884,0.0029,1.0,0.9628,0.8945
